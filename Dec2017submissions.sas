@@ -43,11 +43,50 @@ data text.decbtc;
 run;
 
 
-/*Can use this to split into interesting dates/times corresponding to price peaks/floors
+/*Can use this to split into interesting dates/times corresponding to price peaks/floors*/
+/*Calm rise from Dec1-Dec5 to $11,833*/
 proc sql;
+	create table text.dec1to5 as
 	select submission, date_var
-	from textdate
-	where date_var le '20171204T111952+0000';
+	from text.decbtc
+	where date_var le '20171205T235959+0000';
 run;
 quit; 
+
+/*blast off from Dec6-Dec7 to $17,000*/
+proc sql;
+	create table text.dec6to7 as
+	select submission, date_var
+	from text.decbtc
+	where date_var gt '20171205T235959+0000' and date_var le '20171207T235959+0000';
+run;
+quit;
+
+
+/*bear trap Dec 8-10, down to $13,000*/
+proc sql;
+	create table text.dec8to10 as
+	select submission, date_var
+	from text.decbtc
+	where date_var gt '20171207T235959+0000' and date_var le '20171210T235959+0000';
+run;
+quit;
+
+/*explosion Dec11-17 to $19,500*/
+proc sql;
+	create table text.dec11to17 as
+	select submission, date_var
+	from text.decbtc
+	where date_var gt '20171210T235959+0000' and date_var le '20171217T235959+0000';
+run;
+quit;
+
+/*Decline through the month back to $12,000*/
+proc sql;
+	create table text.dec17to31 as
+	select submission, date_var
+	from text.decbtc
+	where date_var gt '20171217T235959+0000';
+run;
+quit;
 
